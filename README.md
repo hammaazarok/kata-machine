@@ -15,10 +15,6 @@ Studious Users Get Major Abilities. New Useful Training for Students
 ### Ligma Farts
 Learn Intermediate Groundbreaking Massive Algorithms. Free Algorithm Research & Training System
 
-
-### If you have a suggestion
-make an issue and we will come up with the potential name.
-
 ### WARNING
 I have just started to add algorithms, so the number of supported algorithms is
 limited at the moment, but will grow fairly quick.
@@ -74,7 +70,6 @@ this will progressively create folders named
 
 ```
 src/day1
-src/day2
 ...
 ```
 
