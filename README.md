@@ -1,3 +1,6 @@
+# DataStructure and Alogrithms
+> This is a repo provided by front end mentors site to practice solving and testing an algorithm against a set of tests.
+
 ## Developed live on twitch
 [ThePrimeagen](https://twitch.tv/ThePrimeagen)
 
