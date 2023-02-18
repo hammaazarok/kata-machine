@@ -54,7 +54,19 @@ export default class DoublyLinkedList<T> {
             curr.prev.next = curr;
         }
     }
-    append(item: T): void {}
+    append(item: T): void {
+        const node = { value: item } as Node<T>;
+        this.length++;
+        if (!this.tail) {
+            this.head = this.tail = node;
+            return;
+        }
+
+        node.prev = this.tail;
+        this.tail.next = node;
+        this.tail = node;
+
+    }
     remove(item: T): T | undefined {}
     get(idx: number): T | undefined {}
     removeAt(idx: number): T | undefined {}
