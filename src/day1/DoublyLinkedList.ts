@@ -1,4 +1,4 @@
-import { createSourceFile } from "typescript";
+import { createSourceFile, isThisTypeNode } from "typescript";
 
 type Node<T> = {
     value: T;
@@ -65,9 +65,43 @@ export default class DoublyLinkedList<T> {
         node.prev = this.tail;
         this.tail.next = node;
         this.tail = node;
-
     }
-    remove(item: T): T | undefined {}
-    get(idx: number): T | undefined {}
+    remove(item: T): T | undefined {
+        let curr = this.head;
+        for (let i = 0; curr && i < this.length; i++) {
+            if (curr.value === item) {
+                break;
+            }
+            curr = curr.next;
+        }
+        if (!curr) {
+            return undefined;
+        }
+        this.length--;
+
+        if (this.length === 0) {
+            const out = this.head?.value;
+            this.head = this.tail = undefined;
+            return out;
+        }
+
+        if(curr.next){
+            curr.next = curr.prev;
+        }
+        
+        if (curr === this.head){
+            this.head = curr.next;
+        }
+        
+        if(curr === this.tail){
+            this.tail = curr.prev;
+        }
+
+        curr.prev = curr.next = undefined;
+        return curr.value;
+    }
+    get(idx: number): T | undefined {
+        
+    }
     removeAt(idx: number): T | undefined {}
 }
