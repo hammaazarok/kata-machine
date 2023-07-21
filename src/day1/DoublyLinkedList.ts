@@ -1,5 +1,3 @@
-import { createSourceFile, isThisTypeNode } from "typescript";
-
 type Node<T> = {
     value: T;
     prev?: Node<T>;
@@ -85,23 +83,66 @@ export default class DoublyLinkedList<T> {
             return out;
         }
 
-        if(curr.next){
-            curr.next = curr.prev;
+        if (curr.next && curr.prev) {
+            curr.prev.next = curr.next;
         }
-        
-        if (curr === this.head){
+
+        if (curr === this.head) {
             this.head = curr.next;
         }
-        
-        if(curr === this.tail){
+
+        if (curr === this.tail) {
             this.tail = curr.prev;
         }
 
         curr.prev = curr.next = undefined;
         return curr.value;
     }
+
     get(idx: number): T | undefined {
-        
+        let curr = this.head;
+
+        if (!curr) {
+            return undefined;
+        }
+        for (let i = 0; i < idx; i++) {
+            curr = curr?.next;
+        }
+        return curr?.value
+
     }
-    removeAt(idx: number): T | undefined {}
+    removeAt(idx: number): T | undefined {
+        let curr = this.head;
+
+        for (let i = 0; i < idx; i++) {
+            curr = curr?.next;
+        }
+        const value = curr?.value
+        if (!curr) {
+            return undefined;
+        }
+        this.length--;
+
+        if (this.length === 0) {
+            const out = this.head?.value;
+            this.head = this.tail = undefined;
+            return out;
+        }
+
+        if (curr.next && curr.prev) {
+            curr.prev.next = curr.next;
+            curr.next.prev = curr.prev;
+        }
+
+        if (curr === this.head) {
+            this.head = curr.next;
+        }
+
+        if (curr === this.tail) {
+            this.tail = curr.prev;
+        }
+        curr.prev = curr.next = undefined;
+        console.log(this.head)
+        return value;
+    }
 }
