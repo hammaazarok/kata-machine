@@ -1,32 +1,36 @@
+import { HeapNode, ObjectMinHeap } from './MinHeap';
+
 export default function dijkstra_list(
     source: number,
     sink: number,
-    arr: WeightedAdjacencyList): number[] {
+    arr: WeightedAdjacencyList
+): number[] {
 
-    const seen = new Array(arr.length).fill(false);
     const dists = new Array(arr.length).fill(Infinity);
     const prev = new Array(arr.length).fill(-1);
-
     dists[source] = 0;
 
+    const minHeap = new ObjectMinHeap();
 
-    while (hasUnvisited(seen, dists)) {
-        const curr = getLowestUnvisited(seen, dists);
-        seen[curr] = true;
+    minHeap.insert({ node: source, dist: 0 });
+    while (!minHeap.isEmpty()) {
+        const { node: curr, dist: currDist } = minHeap.extractMin() as HeapNode;
+        if (curr === sink) break;
+
+        if (currDist > dists[curr]) continue;
+
         const adjs = arr[curr];
         for (let i = 0; i < adjs.length; ++i) {
             const edge = adjs[i];
-            if (seen[edge.to]) {
-                continue;
-            }
+            const dist = currDist + edge.weight;
 
-            const dist = dists[curr] + edge.weight;
             if (dist < dists[edge.to]) {
                 dists[edge.to] = dist;
                 prev[edge.to] = curr;
+
+                minHeap.insert({ node: edge.to, dist });
             }
         }
-
     }
 
     const out: number[] = [];
@@ -36,26 +40,6 @@ export default function dijkstra_list(
         curr = prev[curr];
     }
 
-    out.push(source)
+    out.push(source);
     return out.reverse();
-}
-
-function hasUnvisited(seen: boolean[], dists: number[]): boolean {
-    return seen.some((s, i) => !s && dists[i] < Infinity);
-}
-
-function getLowestUnvisited(seen: boolean[], dists: number[]): number {
-    let idx = -1
-    let lowestDistance = Infinity;
-    for (let i = 0; i < seen.length; ++i) {
-        if (seen[i]) {
-            continue;
-        }
-
-        if (lowestDistance > dists[i]) {
-            lowestDistance = dists[i];
-            idx = i;
-        }
-    }
-    return idx;
 }
